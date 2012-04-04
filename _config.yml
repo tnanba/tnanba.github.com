@@ -2,10 +2,10 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
+url: http://tnanba.github.com
 title: My Octopress Blog
 subtitle: A blogging framework for hackers.
-author: Your Name
+author: NANBA Toshiaki
 simple_search: http://google.com/search
 description:
 
