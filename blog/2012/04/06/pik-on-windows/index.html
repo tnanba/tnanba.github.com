@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>WindowsへのRuby環境構築 - トカゲのチラシの裏</title>
+  <title>pikによるrubyインストール - トカゲのチラシの裏</title>
   <meta name="author" content="NANBA Toshiaki">
 
   
-  <meta name="description" content="VagrantにCentOSのboxを作成したいけれども、一からやるよりはveeweeというのを使った方がよさそう？ veewee で vagrant 用の仮想サーバ(box)を自動作成 - エンジニアきまぐれTips
-Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
+  <meta name="description" content="pikを動作させる msiからpikをインストールして実行してみるとなぜかうまく動かない。 C:\dev\pik&gt;pik list There was an error. Error: can't dup NilClass in: pathname.rb:205:in `dup' in: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://tnanba.github.com/blog/2012/04/05/ruby-on-windows">
+  <link rel="canonical" href="http://tnanba.github.com/blog/2012/04/06/pik-on-windows">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -80,7 +79,7 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
   
   <header>
     
-      <h1 class="entry-title">WindowsへのRuby環境構築</h1>
+      <h1 class="entry-title">Pikによるrubyインストール</h1>
     
     
       <p class="meta">
@@ -96,57 +95,64 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
   
 
 
-<time datetime="2012-04-05T03:32:00+09:00" pubdate data-updated="true">Apr 5<span>th</span>, 2012</time>
+<time datetime="2012-04-06T02:13:00+09:00" pubdate data-updated="true">Apr 6<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>VagrantにCentOSのboxを作成したいけれども、一からやるよりはveeweeというのを使った方がよさそう？</p>
+<div class="entry-content"><h1>pikを動作させる</h1>
 
-<ul>
-<li><a href="http://d.hatena.ne.jp/okinaka/20110903/1315034637">veewee で vagrant 用の仮想サーバ(box)を自動作成 - エンジニアきまぐれTips</a></li>
-<li><a href="http://d.hatena.ne.jp/Hirohiro/20120122/1327238450">Vagrant &amp; VeeWee を再設定してCentOS 6.2のBoxを作成してみた - Hirohiroの日記</a></li>
-</ul>
+<p>msiからpikをインストールして実行してみるとなぜかうまく動かない。</p>
+
+<div><script src='https://gist.github.com/2312698.js?file='></script>
+<noscript><pre><code>C:\dev\pik&gt;pik list
+
+There was an error.
+ Error: can't dup NilClass
+
+  in: pathname.rb:205:in `dup'
+  in: pathname.rb:205:in `initialize'
+  in: pik/commands/add_command.rb:17:in `new'
+  in: pik/commands/add_command.rb:17:in `add'
+  in: pik/commands/add_command.rb:13:in `execute'
+  in: pik_runner:27
+</code></pre></noscript></div>
 
 
-<p>でもvagrant/veeweeともrubyなので、まずはWindowsにrubyの環境を構築する。</p>
+<p>調べたところ、rubyが全くない環境で動かすと発生するらしい → <a href="http://d.hatena.ne.jp/miau/20110106/1294325095">pik を使って Windows に ruby をインストール - miauの避難所</a></p>
+
+<p>rubyをインストールすれば回避できるらしいが、そもそもpikを使ってrubyをインストールしようとしているのに、それを動かすためにrubyが必要というのでは本末転倒なので、違う方法での回避を試みる。</p>
+
+<p>回避方法も上のページに書いてある。ダミーのエントリを作って、1つでもrubyがインストールされているように見せかければよいらしい。</p>
+
+<p>%HOME%/.pik/config.ymlを作成してダミーを作成しておく。</p>
+
+<div><script src='https://gist.github.com/2312707.js?file='></script>
+<noscript><pre><code>
+---
+&quot;000: ruby 0.0.0 (dummy ruby for pik)&quot;:
+  :path: !ruby/object:Pathname
+    path: C:/pik/dummy
+--- {}
+</code></pre></noscript></div>
+
+
+<p>これでpikが動くようになる。</p>
 
 <hr />
 
-<h1>RVM on Windows</h1>
+<h1>rubyインストール</h1>
 
-<ul>
-<li><a href="https://rvm.beginrescueend.com/">RVM: Ruby Version Manager - RVM Ruby Version Manager - Documentation</a></li>
-</ul>
+<p>pikが動作するようになったので、pik経由でrubyをインストールする。現時点での最新の安定版1.9.3-p125を入れる。</p>
 
-
-<p>Windows環境へのインストール方法の記述がない。と思ったらFAQに記述があった。</p>
-
-<ul>
-<li><a href="http://beginrescueend.com/support/faq/">RVM: Ruby Version Manager - RVM Frequently Asked Questions</a></li>
-</ul>
+<div><script src='https://gist.github.com/2312712.js?file='></script>
+<noscript><pre><code>$ pik install ruby 1.9.3-p125
+</code></pre></noscript></div>
 
 
-<blockquote><p>Does RVM work on windows? Will it in the future?</p>
-
-<p>NO. If you would like to manage multiple versions of ruby on windows please use pik which is an excellent tool by Gordon Thiesfeld. You can find it on GitHub.</p></blockquote>
-
-<p>WindowsではRVMは動かないらしいので、pikを調べてみる。</p>
-
-<hr />
-
-<h1>pik on Windows</h1>
-
-<ul>
-<li><a href="https://github.com/vertiginous/pik/">vertiginous/pik</a></li>
-<li><a href="http://yakinikunotare.boo.jp/orebase/index.php?Ruby%2FWindows7%A4%C71.8%A4%C81.9%B4%C4%B6%AD%A4%F2%C6%B1%B5%EF%A4%B5%A4%BB%A4%EB">Ruby/Windows7で1.8と1.9環境を同居させる - 俺の基地</a></li>
-<li><a href="http://cyberwave.jp/nashiki/2010/05/windows%E3%81%AB%E3%81%A6%E3%80%81%E8%A4%87%E6%95%B0%E3%81%AEruby%E7%92%B0%E5%A2%83%E3%82%92%E5%85%B1%E5%AD%98%E3%81%95%E3%81%9B%E3%82%88%E3%81%86%EF%BC%81/]">pikで簡単、複数のRuby環境構築！ » 梨木を読む</a></li>
-</ul>
-
-
-<p>ダウンロードページからpik-0.2.8.msiを入手してインストールする。ディレクトリはc:\dev\pikに変更。</p>
+<p>インストールが完了したらconfig.ymlを編集してダミーのエントリを削除しておく。</p>
 </div>
 
 
@@ -169,12 +175,12 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
   
 
 
-<time datetime="2012-04-05T03:32:00+09:00" pubdate data-updated="true">Apr 5<span>th</span>, 2012</time>
+<time datetime="2012-04-06T02:13:00+09:00" pubdate data-updated="true">Apr 6<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/pik/'>pik</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/vagrant/'>vagrant</a>, <a class='category' href='/blog/categories/veewee/'>veewee</a>, <a class='category' href='/blog/categories/virtualization/'>virtualization</a>, <a class='category' href='/blog/categories/windows/'>windows</a>
+    <a class='category' href='/blog/categories/pik/'>pik</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/windows/'>windows</a>
   
 </span>
 
@@ -183,7 +189,7 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tnanba.github.com/blog/2012/04/05/ruby-on-windows/" data-via="" data-counturl="http://tnanba.github.com/blog/2012/04/05/ruby-on-windows/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tnanba.github.com/blog/2012/04/06/pik-on-windows/" data-via="" data-counturl="http://tnanba.github.com/blog/2012/04/06/pik-on-windows/" >Tweet</a>
   
   
   
@@ -192,8 +198,10 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2012/04/05/ruby-on-windows/" title="Previous Post: WindowsへのRuby環境構築">&laquo; WindowsへのRuby環境構築</a>
       
-        <a class="basic-alignment right" href="/blog/2012/04/06/pik-on-windows/" title="Next Post: pikによるrubyインストール">pikによるrubyインストール &raquo;</a>
+      
+        <a class="basic-alignment right" href="/blog/2012/04/06/devkit-on-pik/" title="Next Post: pik環境へのDevKitインストール">pik環境へのDevKitインストール &raquo;</a>
       
     </p>
   </footer>

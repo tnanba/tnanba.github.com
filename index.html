@@ -9,8 +9,8 @@
   <meta name="author" content="NANBA Toshiaki">
 
   
-  <meta name="description" content="VagrantにCentOSのboxを作成したいけれども、一からやるよりはveeweeというのを使った方がよさそう？ veewee で vagrant 用の仮想サーバ(box)を自動作成 - エンジニアきまぐれTips
-Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
+  <meta name="description" content="DevKitのインストール Vagrantが依存するgemの中にコンパイルを必要とするものがあるため、DevKitをインストールしておく必要がある。 DevKit
+Development Kit · oneclick/rubyinstaller Wiki ファイルの用意 ダウンロードページから、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,176 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/06/devkit-on-pik/">pik環境へのDevKitインストール</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-06T02:35:00+09:00" pubdate data-updated="true">Apr 6<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>DevKitのインストール</h1>
+
+<p>Vagrantが依存するgemの中にコンパイルを必要とするものがあるため、DevKitをインストールしておく必要がある。</p>
+
+<ul>
+<li><a href="http://rubyinstaller.org/add-ons/devkit/">DevKit</a></li>
+<li><a href="https://github.com/oneclick/rubyinstaller/wiki/Development-Kit">Development Kit · oneclick/rubyinstaller Wiki</a></li>
+</ul>
+
+
+<h2>ファイルの用意</h2>
+
+<p><a href="http://rubyinstaller.org/downloads/">ダウンロードページ</a>から、自己解凍型のファイル(DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe)をダウンロードする。ダウンロードしたファイルを実行すると解凍先を聞かれるので適当に指定する。このとき指定したフォルダに全ファイルがそのまま展開されてしまうので、空のフォルダを作ってそこに展開した方がいい。</p>
+
+<p>展開されたすべてのファイルをまとめて適当なフォルダに移動しておく → とりあえず C:\dev\DevKit-tdm-32-4.5.2 へ。</p>
+
+<h2>インストールスクリプトの実行</h2>
+
+<p>DevKitファイルを移動した先のフォルダでコマンドを実行する。</p>
+
+<pre><code>$ ruby dk.rb init
+</code></pre>
+
+<p>config.ymlファイルができあがるけど中身が空なので、pikでインストールしたrubyのパスを追記する。</p>
+
+<pre><code>- C:\Users\ユーザ名\.pik\rubies\Ruby-193-p125
+</code></pre>
+
+<p>後は内容をチェックして問題なければインストールして完了。</p>
+
+<pre><code>$ ruby dk.rb review
+$ ruby dk.rc install
+</code></pre>
+
+<h2>DevKitの動作確認</h2>
+
+<p><a href="https://github.com/oneclick/rubyinstaller/wiki/Development-Kit">DevKitのページ</a>に書いてあるサンプルを動かしてみて、正しくインストールされているかどうかを確認する。</p>
+
+<pre><code>$ gem install rdiscount --platform=ruby
+Fetching: rdiscount-1.6.8.gem (100%)
+Temporarily enhancing PATH to include DevKit...
+Building native extensions.  This could take a while...
+Successfully installed rdiscount-1.6.8
+1 gem installed
+Installing ri documentation for rdiscount-1.6.8...
+Installing RDoc documentation for rdiscount-1.6.8...
+</code></pre>
+
+<p>&#8220;Temporarily enhancing PATH to include DevKit&#8230;&#8221;というメッセージが表示されていれば、DevKitが正常に動いているはず。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/06/pik-on-windows/">Pikによるrubyインストール</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-06T02:13:00+09:00" pubdate data-updated="true">Apr 6<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>pikを動作させる</h1>
+
+<p>msiからpikをインストールして実行してみるとなぜかうまく動かない。</p>
+
+<div><script src='https://gist.github.com/2312698.js?file='></script>
+<noscript><pre><code>C:\dev\pik&gt;pik list
+
+There was an error.
+ Error: can't dup NilClass
+
+  in: pathname.rb:205:in `dup'
+  in: pathname.rb:205:in `initialize'
+  in: pik/commands/add_command.rb:17:in `new'
+  in: pik/commands/add_command.rb:17:in `add'
+  in: pik/commands/add_command.rb:13:in `execute'
+  in: pik_runner:27
+</code></pre></noscript></div>
+
+
+<p>調べたところ、rubyが全くない環境で動かすと発生するらしい → <a href="http://d.hatena.ne.jp/miau/20110106/1294325095">pik を使って Windows に ruby をインストール - miauの避難所</a></p>
+
+<p>rubyをインストールすれば回避できるらしいが、そもそもpikを使ってrubyをインストールしようとしているのに、それを動かすためにrubyが必要というのでは本末転倒なので、違う方法での回避を試みる。</p>
+
+<p>回避方法も上のページに書いてある。ダミーのエントリを作って、1つでもrubyがインストールされているように見せかければよいらしい。</p>
+
+<p>%HOME%/.pik/config.ymlを作成してダミーを作成しておく。</p>
+
+<div><script src='https://gist.github.com/2312707.js?file='></script>
+<noscript><pre><code>
+---
+&quot;000: ruby 0.0.0 (dummy ruby for pik)&quot;:
+  :path: !ruby/object:Pathname
+    path: C:/pik/dummy
+--- {}
+</code></pre></noscript></div>
+
+
+<p>これでpikが動くようになる。</p>
+
+<hr />
+
+<h1>rubyインストール</h1>
+
+<p>pikが動作するようになったので、pik経由でrubyをインストールする。現時点での最新の安定版1.9.3-p125を入れる。</p>
+
+<div><script src='https://gist.github.com/2312712.js?file='></script>
+<noscript><pre><code>$ pik install ruby 1.9.3-p125
+</code></pre></noscript></div>
+
+
+<p>インストールが完了したらconfig.ymlを編集してダミーのエントリを削除しておく。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -168,6 +338,14 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/04/06/devkit-on-pik/">pik環境へのDevKitインストール</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/04/06/pik-on-windows/">pikによるrubyインストール</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2012/04/05/ruby-on-windows/">WindowsへのRuby環境構築</a>

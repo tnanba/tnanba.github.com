@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: devkit | トカゲのチラシの裏]]></title>
+  <link href="http://tnanba.github.com/blog/categories/devkit/atom.xml" rel="self"/>
+  <link href="http://tnanba.github.com/"/>
+  <updated>2012-04-07T01:57:54+09:00</updated>
+  <id>http://tnanba.github.com/</id>
+  <author>
+    <name><![CDATA[NANBA Toshiaki]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[pik環境へのDevKitインストール]]></title>
+    <link href="http://tnanba.github.com/blog/2012/04/06/devkit-on-pik/"/>
+    <updated>2012-04-06T02:35:00+09:00</updated>
+    <id>http://tnanba.github.com/blog/2012/04/06/devkit-on-pik</id>
+    <content type="html"><![CDATA[<h1>DevKitのインストール</h1>
+
+<p>Vagrantが依存するgemの中にコンパイルを必要とするものがあるため、DevKitをインストールしておく必要がある。</p>
+
+<ul>
+<li><a href="http://rubyinstaller.org/add-ons/devkit/">DevKit</a></li>
+<li><a href="https://github.com/oneclick/rubyinstaller/wiki/Development-Kit">Development Kit · oneclick/rubyinstaller Wiki</a></li>
+</ul>
+
+
+<h2>ファイルの用意</h2>
+
+<p><a href="http://rubyinstaller.org/downloads/">ダウンロードページ</a>から、自己解凍型のファイル(DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe)をダウンロードする。ダウンロードしたファイルを実行すると解凍先を聞かれるので適当に指定する。このとき指定したフォルダに全ファイルがそのまま展開されてしまうので、空のフォルダを作ってそこに展開した方がいい。</p>
+
+<p>展開されたすべてのファイルをまとめて適当なフォルダに移動しておく → とりあえず C:\dev\DevKit-tdm-32-4.5.2 へ。</p>
+
+<h2>インストールスクリプトの実行</h2>
+
+<p>DevKitファイルを移動した先のフォルダでコマンドを実行する。</p>
+
+<pre><code>$ ruby dk.rb init
+</code></pre>
+
+<p>config.ymlファイルができあがるけど中身が空なので、pikでインストールしたrubyのパスを追記する。</p>
+
+<pre><code>- C:\Users\ユーザ名\.pik\rubies\Ruby-193-p125
+</code></pre>
+
+<p>後は内容をチェックして問題なければインストールして完了。</p>
+
+<pre><code>$ ruby dk.rb review
+$ ruby dk.rc install
+</code></pre>
+
+<h2>DevKitの動作確認</h2>
+
+<p><a href="https://github.com/oneclick/rubyinstaller/wiki/Development-Kit">DevKitのページ</a>に書いてあるサンプルを動かしてみて、正しくインストールされているかどうかを確認する。</p>
+
+<pre><code>$ gem install rdiscount --platform=ruby
+Fetching: rdiscount-1.6.8.gem (100%)
+Temporarily enhancing PATH to include DevKit...
+Building native extensions.  This could take a while...
+Successfully installed rdiscount-1.6.8
+1 gem installed
+Installing ri documentation for rdiscount-1.6.8...
+Installing RDoc documentation for rdiscount-1.6.8...
+</code></pre>
+
+<p>"Temporarily enhancing PATH to include DevKit..."というメッセージが表示されていれば、DevKitが正常に動いているはず。</p>
+]]></content>
+  </entry>
+  
+</feed>
