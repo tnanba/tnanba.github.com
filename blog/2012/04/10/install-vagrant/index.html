@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>WindowsへのRuby環境構築 - トカゲのチラシの裏</title>
+  <title>Vagrantのインストール - トカゲのチラシの裏</title>
   <meta name="author" content="NANBA Toshiaki">
 
   
-  <meta name="description" content="VagrantにCentOSのboxを作成したいけれども、一からやるよりはveeweeというのを使った方がよさそう？ veewee で vagrant 用の仮想サーバ(box)を自動作成 - エンジニアきまぐれTips
-Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
+  <meta name="description" content="ruby(pik)、DevKitと必要な道具がそろったのでVagrantをインストールする。インストール自体はgemからインストールするだけ。 $ pik use 193
+$ gem install vagrant インストールできたら、配布されているboxを使って試しに起動してみる。 $ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://tnanba.github.com/blog/2012/04/05/ruby-on-windows">
+  <link rel="canonical" href="http://tnanba.github.com/blog/2012/04/10/install-vagrant">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -80,7 +80,7 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
   
   <header>
     
-      <h1 class="entry-title">WindowsへのRuby環境構築</h1>
+      <h1 class="entry-title">Vagrantのインストール</h1>
     
     
       <p class="meta">
@@ -96,57 +96,54 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
   
 
 
-<time datetime="2012-04-05T03:32:00+09:00" pubdate data-updated="true">Apr 5<span>th</span>, 2012</time>
+<time datetime="2012-04-10T01:50:00+09:00" pubdate data-updated="true">Apr 10<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>VagrantにCentOSのboxを作成したいけれども、一からやるよりはveeweeというのを使った方がよさそう？</p>
+<div class="entry-content"><p>ruby(pik)、DevKitと必要な道具がそろったのでVagrantをインストールする。インストール自体はgemからインストールするだけ。</p>
+
+<pre><code>$ pik use 193
+$ gem install vagrant
+</code></pre>
+
+<p>インストールできたら、配布されているboxを使って試しに起動してみる。</p>
+
+<pre><code>$ vagrant box add lucid32 http://files.vagrantup.com/lucid32.box
+$ vagrant init lucid32
+$ vagrant up
+</code></pre>
+
+<p>LinuxやMacの場合はここで&#8221;vagrant ssh&#8221;を実行するだけで起動した仮想マシンに接続できるが、Windowsの場合はそれができないので、puttyから接続する必要がある。</p>
 
 <ul>
-<li><a href="http://d.hatena.ne.jp/okinaka/20110903/1315034637">veewee で vagrant 用の仮想サーバ(box)を自動作成 - エンジニアきまぐれTips</a></li>
-<li><a href="http://d.hatena.ne.jp/Hirohiro/20120122/1327238450">Vagrant &amp; VeeWee を再設定してCentOS 6.2のBoxを作成してみた - Hirohiroの日記</a></li>
+<li><a href="http://vagrantup.com/docs/getting-started/ssh.html">Vagrant - Getting Started - SSH</a></li>
 </ul>
 
 
-<p>でもvagrant/veeweeともrubyなので、まずはWindowsにrubyの環境を構築する。</p>
+<p>接続方法は&#8221;vargrant ssh&#8221;を実行すると出てくる。</p>
 
-<hr />
+<pre><code>$ vagrant ssh
+`vagrant ssh` isn't available on the Windows platform. You are still able
+to SSH into the virtual machine if you get a Windows SSH client (such as
+PuTTY). The authentication information is shown below:
 
-<h1>RVM on Windows</h1>
+Host: 127.0.0.1
+Port: 2222
+Username: vagrant
+Private key: C:/Users/xxx/.vagrant.d/insecure_private_key
+</code></pre>
 
-<ul>
-<li><a href="https://rvm.beginrescueend.com/">RVM: Ruby Version Manager - RVM Ruby Version Manager - Documentation</a></li>
-</ul>
+<p>接続に使用する秘密鍵は%HOME%/.vagrant.d/insecure_private_keyにあるが、これはこのままではputtyで使用できないので、puttygenでputty用に変換しておく必要がある。</p>
 
+<p>あとは表示される設定に従ってputtyで接続するだけ。</p>
 
-<p>Windows環境へのインストール方法の記述がない。と思ったらFAQに記述があった。</p>
+<p>確認が終わったら終了させておく。</p>
 
-<ul>
-<li><a href="http://beginrescueend.com/support/faq/">RVM: Ruby Version Manager - RVM Frequently Asked Questions</a></li>
-</ul>
-
-
-<blockquote><p>Does RVM work on windows? Will it in the future?</p>
-
-<p>NO. If you would like to manage multiple versions of ruby on windows please use pik which is an excellent tool by Gordon Thiesfeld. You can find it on GitHub.</p></blockquote>
-
-<p>WindowsではRVMは動かないらしいので、pikを調べてみる。</p>
-
-<hr />
-
-<h1>pik on Windows</h1>
-
-<ul>
-<li><a href="https://github.com/vertiginous/pik/">vertiginous/pik</a></li>
-<li><a href="http://yakinikunotare.boo.jp/orebase/index.php?Ruby%2FWindows7%A4%C71.8%A4%C81.9%B4%C4%B6%AD%A4%F2%C6%B1%B5%EF%A4%B5%A4%BB%A4%EB">Ruby/Windows7で1.8と1.9環境を同居させる - 俺の基地</a></li>
-<li><a href="http://cyberwave.jp/nashiki/2010/05/windows%E3%81%AB%E3%81%A6%E3%80%81%E8%A4%87%E6%95%B0%E3%81%AEruby%E7%92%B0%E5%A2%83%E3%82%92%E5%85%B1%E5%AD%98%E3%81%95%E3%81%9B%E3%82%88%E3%81%86%EF%BC%81/]">pikで簡単、複数のRuby環境構築！ » 梨木を読む</a></li>
-</ul>
-
-
-<p>ダウンロードページからpik-0.2.8.msiを入手してインストールする。ディレクトリはc:\dev\pikに変更。</p>
+<pre><code>$ vagrant destory
+</code></pre>
 </div>
 
 
@@ -169,12 +166,12 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
   
 
 
-<time datetime="2012-04-05T03:32:00+09:00" pubdate data-updated="true">Apr 5<span>th</span>, 2012</time>
+<time datetime="2012-04-10T01:50:00+09:00" pubdate data-updated="true">Apr 10<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/pik/'>pik</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/vagrant/'>vagrant</a>, <a class='category' href='/blog/categories/veewee/'>veewee</a>, <a class='category' href='/blog/categories/virtualization/'>virtualization</a>, <a class='category' href='/blog/categories/windows/'>windows</a>
+    <a class='category' href='/blog/categories/pik/'>pik</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/vagrant/'>vagrant</a>, <a class='category' href='/blog/categories/virtualization/'>virtualization</a>
   
 </span>
 
@@ -183,7 +180,7 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tnanba.github.com/blog/2012/04/05/ruby-on-windows/" data-via="" data-counturl="http://tnanba.github.com/blog/2012/04/05/ruby-on-windows/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tnanba.github.com/blog/2012/04/10/install-vagrant/" data-via="" data-counturl="http://tnanba.github.com/blog/2012/04/10/install-vagrant/" >Tweet</a>
   
   
   
@@ -192,8 +189,8 @@ Vagrant &amp; VeeWee を再設定してCentOS 6. &hellip;">
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2012/04/06/devkit-on-pik/" title="Previous Post: pik環境へのDevKitインストール">&laquo; pik環境へのDevKitインストール</a>
       
-        <a class="basic-alignment right" href="/blog/2012/04/06/pik-on-windows/" title="Next Post: pikによるrubyインストール">pikによるrubyインストール &raquo;</a>
       
     </p>
   </footer>

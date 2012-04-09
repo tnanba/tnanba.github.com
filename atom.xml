@@ -4,7 +4,7 @@
   <title><![CDATA[トカゲのチラシの裏]]></title>
   <link href="http://tnanba.github.com/atom.xml" rel="self"/>
   <link href="http://tnanba.github.com/"/>
-  <updated>2012-04-10T01:44:37+09:00</updated>
+  <updated>2012-04-10T02:36:39+09:00</updated>
   <id>http://tnanba.github.com/</id>
   <author>
     <name><![CDATA[NANBA Toshiaki]]></name>
@@ -12,6 +12,55 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Vagrantのインストール]]></title>
+    <link href="http://tnanba.github.com/blog/2012/04/10/install-vagrant/"/>
+    <updated>2012-04-10T01:50:00+09:00</updated>
+    <id>http://tnanba.github.com/blog/2012/04/10/install-vagrant</id>
+    <content type="html"><![CDATA[<p>ruby(pik)、DevKitと必要な道具がそろったのでVagrantをインストールする。インストール自体はgemからインストールするだけ。</p>
+
+<pre><code>$ pik use 193
+$ gem install vagrant
+</code></pre>
+
+<p>インストールできたら、配布されているboxを使って試しに起動してみる。</p>
+
+<pre><code>$ vagrant box add lucid32 http://files.vagrantup.com/lucid32.box
+$ vagrant init lucid32
+$ vagrant up
+</code></pre>
+
+<p>LinuxやMacの場合はここで&#8221;vagrant ssh&#8221;を実行するだけで起動した仮想マシンに接続できるが、Windowsの場合はそれができないので、puttyから接続する必要がある。</p>
+
+<ul>
+<li><a href="http://vagrantup.com/docs/getting-started/ssh.html">Vagrant - Getting Started - SSH</a></li>
+</ul>
+
+
+<p>接続方法は&#8221;vargrant ssh&#8221;を実行すると出てくる。</p>
+
+<pre><code>$ vagrant ssh
+`vagrant ssh` isn't available on the Windows platform. You are still able
+to SSH into the virtual machine if you get a Windows SSH client (such as
+PuTTY). The authentication information is shown below:
+
+Host: 127.0.0.1
+Port: 2222
+Username: vagrant
+Private key: C:/Users/xxx/.vagrant.d/insecure_private_key
+</code></pre>
+
+<p>接続に使用する秘密鍵は%HOME%/.vagrant.d/insecure_private_keyにあるが、これはこのままではputtyで使用できないので、puttygenでputty用に変換しておく必要がある。</p>
+
+<p>あとは表示される設定に従ってputtyで接続するだけ。</p>
+
+<p>確認が終わったら終了させておく。</p>
+
+<pre><code>$ vagrant destory
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[pik環境へのDevKitインストール]]></title>
