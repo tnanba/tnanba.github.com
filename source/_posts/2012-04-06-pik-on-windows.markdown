@@ -10,7 +10,17 @@ pikを動作させる
 ===============
 msiからpikをインストールして実行してみるとなぜかうまく動かない。
 
-{% gist 2312698  %}
+	C:\dev\pik>pik list
+
+	There was an error.
+	 Error: can't dup NilClass
+
+	  in: pathname.rb:205:in `dup'
+	  in: pathname.rb:205:in `initialize'
+	  in: pik/commands/add_command.rb:17:in `new'
+	  in: pik/commands/add_command.rb:17:in `add'
+	  in: pik/commands/add_command.rb:13:in `execute'
+	  in: pik_runner:27
 
 調べたところ、rubyが全くない環境で動かすと発生するらしい → [pik を使って Windows に ruby をインストール - miauの避難所][1]
 
@@ -21,7 +31,11 @@ rubyをインストールすれば回避できるらしいが、そもそもpik�
 
 %HOME%/.pik/config.ymlを作成してダミーを作成しておく。
 
-{% gist 2312707 %}
+	---
+	"000: ruby 0.0.0 (dummy ruby for pik)":
+	  :path: !ruby/object:Pathname
+	    path: C:/pik/dummy
+	--- {}
 
 これでpikが動くようになる。
 
@@ -33,6 +47,6 @@ rubyインストール
 ================
 pikが動作するようになったので、pik経由でrubyをインストールする。現時点での最新の安定版1.9.3-p125を入れる。
 
-{% gist 2312712 %}
+	$ pik install ruby 1.9.3-p125
 
 インストールが完了したらconfig.ymlを編集してダミーのエントリを削除しておく。
