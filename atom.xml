@@ -4,7 +4,7 @@
   <title><![CDATA[トカゲのチラシの裏]]></title>
   <link href="http://tnanba.github.com/atom.xml" rel="self"/>
   <link href="http://tnanba.github.com/"/>
-  <updated>2012-04-07T01:57:54+09:00</updated>
+  <updated>2012-04-10T01:44:37+09:00</updated>
   <id>http://tnanba.github.com/</id>
   <author>
     <name><![CDATA[NANBA Toshiaki]]></name>
@@ -79,8 +79,7 @@ Installing RDoc documentation for rdiscount-1.6.8...
 
 <p>msiからpikをインストールして実行してみるとなぜかうまく動かない。</p>
 
-<div><script src='https://gist.github.com/2312698.js?file='></script>
-<noscript><pre><code>C:\dev\pik&gt;pik list
+<pre><code>C:\dev\pik&gt;pik list
 
 There was an error.
  Error: can't dup NilClass
@@ -91,8 +90,7 @@ There was an error.
   in: pik/commands/add_command.rb:17:in `add'
   in: pik/commands/add_command.rb:13:in `execute'
   in: pik_runner:27
-</code></pre></noscript></div>
-
+</code></pre>
 
 <p>調べたところ、rubyが全くない環境で動かすと発生するらしい → <a href="http://d.hatena.ne.jp/miau/20110106/1294325095">pik を使って Windows に ruby をインストール - miauの避難所</a></p>
 
@@ -102,15 +100,12 @@ There was an error.
 
 <p>%HOME%/.pik/config.ymlを作成してダミーを作成しておく。</p>
 
-<div><script src='https://gist.github.com/2312707.js?file='></script>
-<noscript><pre><code>
----
-&quot;000: ruby 0.0.0 (dummy ruby for pik)&quot;:
+<pre><code>---
+"000: ruby 0.0.0 (dummy ruby for pik)":
   :path: !ruby/object:Pathname
     path: C:/pik/dummy
 --- {}
-</code></pre></noscript></div>
-
+</code></pre>
 
 <p>これでpikが動くようになる。</p>
 
@@ -120,10 +115,8 @@ There was an error.
 
 <p>pikが動作するようになったので、pik経由でrubyをインストールする。現時点での最新の安定版1.9.3-p125を入れる。</p>
 
-<div><script src='https://gist.github.com/2312712.js?file='></script>
-<noscript><pre><code>$ pik install ruby 1.9.3-p125
-</code></pre></noscript></div>
-
+<pre><code>$ pik install ruby 1.9.3-p125
+</code></pre>
 
 <p>インストールが完了したらconfig.ymlを編集してダミーのエントリを削除しておく。</p>
 ]]></content>
